@@ -287,18 +287,18 @@ function App() {
       >
         <div className="drawer-content">
           <h3>Social</h3>
-          <a href="mailto:justin.r.stock@gmail.com">Email</a>
+          <a href="mailto:jrstock@duck.com">Email</a>
           <a href="https://github.com/jrstock79" target="_blank" rel="noreferrer">
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/placeholder"
+            href="https://www.linkedin.com/in/jr-stock/"
             target="_blank"
             rel="noreferrer"
           >
             LinkedIn
           </a>
-          <a href="/resume.pdf">Resume</a>
+          <a href="/Justin_Stock_res.pdf">Resume</a>
         </div>
       </aside>
       <div className="container">
@@ -322,22 +322,22 @@ function App() {
               </a>
             </div>
             <div className="nav-socials">
-              <a href="mailto:justin.r.stock@gmail.com">Email</a>
-              <a
-                href="https://github.com/jrstock79"
-                target="_blank"
-                rel="noreferrer"
-              >
-                GitHub
+          <a href="mailto:jrstock@duck.com">Email</a>
+          <a
+            href="https://github.com/ymoose79"
+            target="_blank"
+            rel="noreferrer"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/jr-stock/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
               </a>
-              <a
-                href="https://linkedin.com/in/placeholder"
-                target="_blank"
-                rel="noreferrer"
-              >
-                LinkedIn
-              </a>
-              <a href="/resume.pdf">Resume</a>
+          <a href="/Justin_Stock_res.pdf">Resume</a>
             </div>
           </nav>
 
@@ -349,7 +349,7 @@ function App() {
               I keep SaaS platforms reliable, shorten diagnosis time, and bring
               cost discipline to cloud operations.
             </p>
-            <a className="hire-me" href="mailto:justin.r.stock@gmail.com">
+            <a className="hire-me" href="mailto:jrstock@duck.com">
               Contact me
             </a>
           </div>
@@ -535,28 +535,28 @@ function App() {
             <h2>Contact</h2>
             <p>
               Email:{" "}
-              <a href="mailto:justin.r.stock@gmail.com">
-                justin.r.stock@gmail.com
+              <a href="mailto:jrstock@duck.com">
+                jrstock@duck.com
               </a>
             </p>
             <p>
               LinkedIn:{" "}
               <a
-                href="https://linkedin.com/in/placeholder"
+                href="https://www.linkedin.com/in/jr-stock/"
                 target="_blank"
                 rel="noreferrer"
               >
-                linkedin.com/in/placeholder
+                linkedin.com/in/jr-stock
               </a>
             </p>
             <p>
               GitHub:{" "}
               <a
-                href="https://github.com/jrstock79"
+                href="https://github.com/ymoose79"
                 target="_blank"
                 rel="noreferrer"
               >
-                github.com/jrstock79
+                github.com/ymoose79
               </a>
             </p>
           </section>
@@ -567,7 +567,7 @@ function App() {
           className={`floating-button contact-button ${
             showContactButton ? "" : "is-hidden"
           }`}
-          href="mailto:justin.r.stock@gmail.com"
+          href="mailto:jrstock@duck.com"
         >
           Contact me
         </a>
