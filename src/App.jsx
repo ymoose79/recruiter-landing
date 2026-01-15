@@ -1,9 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 function App() {
   const [showTopButton, setShowTopButton] = useState(false);
   const [showContactButton, setShowContactButton] = useState(false);
+  const [showMobileTopbar, setShowMobileTopbar] = useState(true);
+  const [showMobileBottomBar, setShowMobileBottomBar] = useState(false);
+  const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+  const [isSocialDrawerOpen, setIsSocialDrawerOpen] = useState(false);
+  const lastScrollYRef = useRef(0);
+  const rafRef = useRef(null);
+  const hideBottomTimerRef = useRef(null);
 
   const prefersReducedMotion = () =>
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -49,6 +56,8 @@ function App() {
     }
 
     event.preventDefault();
+    setIsNavDrawerOpen(false);
+    setIsSocialDrawerOpen(false);
     const targetY = target.getBoundingClientRect().top + window.scrollY;
     smoothScrollTo(targetY);
   };
@@ -56,6 +65,41 @@ function App() {
   const handleTopClick = (event) => {
     event.preventDefault();
     smoothScrollTo(0);
+  };
+
+  const handleMobileTopClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  };
+
+  const handleMobileContactClick = () => {
+    const target = document.getElementById("contact");
+    if (!target) {
+      return;
+    }
+
+    const targetY = target.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({
+      top: targetY,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
+  };
+
+  const handleNavToggle = () => {
+    setIsNavDrawerOpen((prev) => !prev);
+    setIsSocialDrawerOpen(false);
+  };
+
+  const handleSocialToggle = () => {
+    setIsSocialDrawerOpen((prev) => !prev);
+    setIsNavDrawerOpen(false);
+  };
+
+  const handleOverlayClick = () => {
+    setIsNavDrawerOpen(false);
+    setIsSocialDrawerOpen(false);
   };
 
   useEffect(() => {
@@ -86,8 +130,177 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const deadZone = 6;
+    lastScrollYRef.current = window.scrollY;
+
+    const updateScrollState = () => {
+      if (rafRef.current) {
+        return;
+      }
+
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null;
+        const currentY = window.scrollY;
+        const lastY = lastScrollYRef.current;
+        const delta = currentY - lastY;
+        const atTop = currentY < 12;
+        const scrollingDown = delta > deadZone;
+        const scrollingUp = delta < -deadZone;
+
+        if (atTop) {
+          if (hideBottomTimerRef.current) {
+            window.clearTimeout(hideBottomTimerRef.current);
+            hideBottomTimerRef.current = null;
+          }
+          setShowMobileTopbar(true);
+          setShowMobileBottomBar(false);
+        } else if (scrollingDown) {
+          if (hideBottomTimerRef.current) {
+            window.clearTimeout(hideBottomTimerRef.current);
+            hideBottomTimerRef.current = null;
+          }
+          setShowMobileTopbar(false);
+          setShowMobileBottomBar(true);
+          setIsNavDrawerOpen(false);
+          setIsSocialDrawerOpen(false);
+        } else if (scrollingUp) {
+          setShowMobileTopbar(true);
+          if (!hideBottomTimerRef.current) {
+            hideBottomTimerRef.current = window.setTimeout(() => {
+              setShowMobileBottomBar(false);
+              hideBottomTimerRef.current = null;
+            }, 220);
+          }
+        }
+
+        lastScrollYRef.current = currentY;
+      });
+    };
+
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+
+    return () => {
+      window.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+      if (hideBottomTimerRef.current) {
+        window.clearTimeout(hideBottomTimerRef.current);
+        hideBottomTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const isDrawerOpen = isNavDrawerOpen || isSocialDrawerOpen;
+    if (!isDrawerOpen) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isNavDrawerOpen, isSocialDrawerOpen]);
+
+  useEffect(() => {
+    const isDrawerOpen = isNavDrawerOpen || isSocialDrawerOpen;
+    if (!isDrawerOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsNavDrawerOpen(false);
+        setIsSocialDrawerOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isNavDrawerOpen, isSocialDrawerOpen]);
+
   return (
     <div className="page">
+      <div
+        className={`mobile-topbar ${showMobileTopbar ? "" : "is-hidden"}`}
+      >
+        <button
+          type="button"
+          className="mobile-topbar-button"
+          aria-label="Open navigation"
+          aria-expanded={isNavDrawerOpen}
+          onClick={handleNavToggle}
+        >
+          Menu
+        </button>
+        <span className="mobile-topbar-title">JRS</span>
+        <button
+          type="button"
+          className="mobile-topbar-button"
+          aria-label="Open social links"
+          aria-expanded={isSocialDrawerOpen}
+          onClick={handleSocialToggle}
+        >
+          Social
+        </button>
+      </div>
+      <div
+        className={`drawer-overlay ${
+          isNavDrawerOpen || isSocialDrawerOpen ? "is-open" : ""
+        }`}
+        onClick={handleOverlayClick}
+      />
+      <aside
+        className={`drawer drawer-left ${
+          isNavDrawerOpen ? "is-open" : ""
+        }`}
+        aria-hidden={!isNavDrawerOpen}
+      >
+        <div className="drawer-content">
+          <h3>Navigate</h3>
+          <a href="#about" onClick={(event) => handleNavClick(event, "about")}>
+            About
+          </a>
+          <a
+            href="#experience"
+            onClick={(event) => handleNavClick(event, "experience")}
+          >
+            Experience
+          </a>
+          <a
+            href="#projects"
+            onClick={(event) => handleNavClick(event, "projects")}
+          >
+            Projects
+          </a>
+        </div>
+      </aside>
+      <aside
+        className={`drawer drawer-right ${
+          isSocialDrawerOpen ? "is-open" : ""
+        }`}
+        aria-hidden={!isSocialDrawerOpen}
+      >
+        <div className="drawer-content">
+          <h3>Social</h3>
+          <a href="mailto:justin.r.stock@gmail.com">Email</a>
+          <a href="https://github.com/jrstock79" target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a
+            href="https://linkedin.com/in/placeholder"
+            target="_blank"
+            rel="noreferrer"
+          >
+            LinkedIn
+          </a>
+          <a href="/resume.pdf">Resume</a>
+        </div>
+      </aside>
       <div className="container">
         <header className="hero">
           <nav className="top-nav">
@@ -366,6 +579,26 @@ function App() {
           onClick={handleTopClick}
         >
           Up Top
+        </button>
+      </div>
+      <div
+        className={`mobile-bottom-bar ${
+          showMobileBottomBar ? "" : "is-hidden"
+        }`}
+      >
+        <button
+          type="button"
+          className="mobile-bottom-button"
+          onClick={handleMobileTopClick}
+        >
+          Up Top
+        </button>
+        <button
+          type="button"
+          className="mobile-bottom-button"
+          onClick={handleMobileContactClick}
+        >
+          Contact Me
         </button>
       </div>
     </div>

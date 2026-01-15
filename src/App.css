@@ -152,6 +152,13 @@ a {
   transform: scaleX(0.85);
 }
 
+.mobile-topbar,
+.drawer,
+.drawer-overlay,
+.mobile-bottom-bar {
+  display: none;
+}
+
 .hero {
   text-align: center;
 }
@@ -317,22 +324,181 @@ h2 {
 }
 
 @media (max-width: 720px) {
-  .floating-actions {
-    right: 18px;
-    bottom: 18px;
+  :root {
+    --mobile-topbar-height: 52px;
+    --mobile-bottom-bar-height: 64px;
   }
-}
 
-@media (max-width: 720px) {
   .container {
-    padding: 56px 0 80px;
+    padding: calc(56px + var(--mobile-topbar-height)) 0
+      calc(80px + var(--mobile-bottom-bar-height));
   }
 
   .top-nav {
-    justify-content: center;
+    display: none;
   }
 
-  .hero {
-    text-align: center;
+  .floating-actions {
+    display: none;
+  }
+
+  .mobile-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--mobile-topbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 16px;
+    background: rgba(11, 15, 20, 0.92);
+    border-bottom: 1px solid rgba(99, 216, 196, 0.18);
+    backdrop-filter: blur(8px);
+    z-index: 30;
+    transition: transform 220ms ease, opacity 220ms ease;
+  }
+
+  .mobile-topbar.is-hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    pointer-events: none;
+  }
+
+  .mobile-topbar-title {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .mobile-topbar-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(99, 216, 196, 0.35);
+    background: rgba(11, 15, 20, 0.7);
+    color: var(--text);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: border-color 200ms ease, transform 200ms ease;
+  }
+
+  .mobile-topbar-button:hover {
+    border-color: rgba(99, 216, 196, 0.6);
+    transform: translateY(-1px);
+  }
+
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    display: block;
+    background: rgba(11, 15, 20, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
+    z-index: 20;
+  }
+
+  .drawer-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 240px;
+    display: block;
+    background: rgba(11, 15, 20, 0.95);
+    border: 1px solid rgba(99, 216, 196, 0.25);
+    box-shadow: 0 18px 32px rgba(3, 6, 10, 0.45);
+    padding: calc(var(--mobile-topbar-height) + 16px) 16px 16px;
+    transition: transform 240ms ease;
+    z-index: 25;
+  }
+
+  .drawer-left {
+    left: 0;
+    border-left: none;
+    border-radius: 0 16px 16px 0;
+    transform: translateX(-110%);
+  }
+
+  .drawer-right {
+    right: 0;
+    border-right: none;
+    border-radius: 16px 0 0 16px;
+    transform: translateX(110%);
+  }
+
+  .drawer.is-open {
+    transform: translateX(0);
+  }
+
+  .drawer-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .drawer-content h3 {
+    margin: 0 0 4px;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .drawer-content a {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  .mobile-bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 16px 16px;
+    background: rgba(11, 15, 20, 0.88);
+    border-top: 1px solid rgba(99, 216, 196, 0.18);
+    backdrop-filter: blur(8px);
+    z-index: 30;
+    transition: transform 220ms ease, opacity 220ms ease;
+  }
+
+  .mobile-bottom-bar.is-hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+  }
+
+  .mobile-bottom-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(99, 216, 196, 0.35);
+    background: rgba(11, 15, 20, 0.7);
+    color: var(--text);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: border-color 200ms ease, transform 200ms ease;
+  }
+
+  .mobile-bottom-button:hover {
+    border-color: rgba(99, 216, 196, 0.6);
+    transform: translateY(-1px);
   }
 }
