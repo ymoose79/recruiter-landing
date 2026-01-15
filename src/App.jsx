@@ -298,7 +298,9 @@ function App() {
           >
             LinkedIn
           </a>
-          <a href="/Justin_Stock_res.pdf">Resume</a>
+          <a href="/Justin_Stock_res.pdf" target="_blank" rel="noreferrer">
+            Resume
+          </a>
         </div>
       </aside>
       <div className="container">
@@ -337,7 +339,9 @@ function App() {
           >
             LinkedIn
               </a>
-          <a href="/Justin_Stock_res.pdf">Resume</a>
+          <a href="/Justin_Stock_res.pdf" target="_blank" rel="noreferrer">
+            Resume
+          </a>
             </div>
           </nav>
 
