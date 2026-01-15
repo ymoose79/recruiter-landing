@@ -1,22 +1,127 @@
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
+  const [showTopButton, setShowTopButton] = useState(false);
+  const [showContactButton, setShowContactButton] = useState(false);
+
+  const prefersReducedMotion = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const smoothScrollTo = (targetY) => {
+    if (prefersReducedMotion()) {
+      window.scrollTo(0, targetY);
+      return;
+    }
+
+    const start = window.scrollY;
+    const distance = targetY - start;
+    const baseDuration = 700;
+    const duration = baseDuration * 1.3;
+    let startTime = null;
+
+    const step = (timestamp) => {
+      if (startTime === null) {
+        startTime = timestamp;
+      }
+
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased =
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+      window.scrollTo(0, start + distance * eased);
+
+      if (elapsed < duration) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    window.requestAnimationFrame(step);
+  };
+
+  const handleNavClick = (event, sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+    const targetY = target.getBoundingClientRect().top + window.scrollY;
+    smoothScrollTo(targetY);
+  };
+
+  const handleTopClick = (event) => {
+    event.preventDefault();
+    smoothScrollTo(0);
+  };
+
+  useEffect(() => {
+    const sections = ["about", "experience", "projects"];
+
+    const updateVisibility = () => {
+      const scrollPosition = window.scrollY + window.innerHeight * 0.4;
+      const isPastSection = sections.some((id) => {
+        const section = document.getElementById(id);
+        if (!section) {
+          return false;
+        }
+        const sectionBottom = section.offsetTop + section.offsetHeight;
+        return scrollPosition >= sectionBottom;
+      });
+
+      setShowTopButton(isPastSection);
+      setShowContactButton(window.scrollY > 40);
+    };
+
+    updateVisibility();
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    window.addEventListener("resize", updateVisibility);
+
+    return () => {
+      window.removeEventListener("scroll", updateVisibility);
+      window.removeEventListener("resize", updateVisibility);
+    };
+  }, []);
+
   return (
     <div className="page">
       <div className="container">
         <header className="hero">
           <nav className="top-nav">
             <div className="nav-links">
-              <a href="#about">About</a>
-              <a href="#experience">Experience</a>
-              <a href="#projects">Projects</a>
+              <a href="#about" onClick={(event) => handleNavClick(event, 'about')}>
+                About
+              </a>
+              <a
+                href="#experience"
+                onClick={(event) => handleNavClick(event, 'experience')}
+              >
+                Experience
+              </a>
+              <a
+                href="#projects"
+                onClick={(event) => handleNavClick(event, 'projects')}
+              >
+                Projects
+              </a>
             </div>
             <div className="nav-socials">
               <a href="mailto:justin.r.stock@gmail.com">Email</a>
-              <a href="https://github.com/jrstock79" target="_blank" rel="noreferrer">
+              <a
+                href="https://github.com/jrstock79"
+                target="_blank"
+                rel="noreferrer"
+              >
                 GitHub
               </a>
-              <a href="https://linkedin.com/in/placeholder" target="_blank" rel="noreferrer">
+              <a
+                href="https://linkedin.com/in/placeholder"
+                target="_blank"
+                rel="noreferrer"
+              >
                 LinkedIn
               </a>
               <a href="/resume.pdf">Resume</a>
@@ -32,7 +137,7 @@ function App() {
               cost discipline to cloud operations.
             </p>
             <a className="hire-me" href="mailto:justin.r.stock@gmail.com">
-              Hire me
+              Contact me
             </a>
           </div>
         </header>
@@ -43,12 +148,12 @@ function App() {
             <h3>Proof of impact</h3>
             <ul>
               <li>
-                Helped teams move from long incident hunts to faster, clearer
-                diagnosis with consistent checks and notes.
+                Improved maintainability by refactoring hard-to-read JavaScript
+                in data transformations.
               </li>
               <li>
-                Steadied critical data flows by fixing weak spots and clarifying
-                handoffs.
+                Helped customer-facing teams set accurate expectations by
+                explaining issues and timelines clearly.
               </li>
               <li>
                 Flagged avoidable cloud spend and proposed practical ways to
@@ -67,10 +172,19 @@ function App() {
               automation that reduces manual effort.
             </p>
             <ul>
-              <li>Restore service quickly and keep follow-up work calm and clear.</li>
-              <li>Set up safe ways for clients to deliver files without extra access.</li>
-              <li>Reduce manual work with simple scripts and repeatable checks.</li>
-              <li>Improve data flow reliability through careful review and tuning.</li>
+              <li>
+                Restore service quickly and keep follow-up work calm and clear.
+              </li>
+              <li>
+                Set up safe ways for clients to deliver files without extra
+                access.
+              </li>
+              <li>
+                Reduce manual work with simple scripts and repeatable checks.
+              </li>
+              <li>
+                Improve data flow reliability through careful review and tuning.
+              </li>
             </ul>
             <h3>How I work</h3>
             <ul>
@@ -81,16 +195,25 @@ function App() {
             </ul>
             <h3>How I use AI</h3>
             <ul>
-              <li>Uses AI to explore options, draft scripts, and think through issues.</li>
-              <li>Looks for outside-the-box ways to save time and reduce manual effort.</li>
-              <li>Treats AI as support for judgment, not a replacement for it.</li>
+              <li>
+                Uses AI to explore options, draft scripts, and think through
+                issues.
+              </li>
+              <li>
+                Looks for outside-the-box ways to save time and reduce manual
+                effort.
+              </li>
+              <li>
+                Treats AI as support for judgment, not a replacement for it.
+              </li>
             </ul>
           </section>
 
           <section className="content-section" id="experience">
             <h2>Experience</h2>
             <p>
-              [Company] — Application Manager / Software Developer — [Timeframe]
+              epaCUBE — Application Manager / Software Developer — Aug,
+              2022–Present
             </p>
             <p>
               Own day-to-day reliability and improvement for a SaaS platform,
@@ -99,9 +222,13 @@ function App() {
               while shipping incremental improvements.
             </p>
             <ul>
-              <li>Incident response, root-cause analysis, and durable fixes.</li>
+              <li>
+                Incident response, root-cause analysis, and durable fixes.
+              </li>
               <li>AWS: file storage, compute, and ongoing cost reviews.</li>
-              <li>SQL, CloverETL, Linux/Bash, and Tomcat service management.</li>
+              <li>
+                SQL, CloverETL, Linux/Bash, and Tomcat service management.
+              </li>
             </ul>
           </section>
 
@@ -126,8 +253,12 @@ function App() {
                   browsing.
                 </p>
                 <ul>
-                  <li>Reduced exposure risk by eliminating shared credentials.</li>
-                  <li>Improved intake reliability with auditable access flow.</li>
+                  <li>
+                    Reduced exposure risk by eliminating shared credentials.
+                  </li>
+                  <li>
+                    Improved intake reliability with auditable access flow.
+                  </li>
                 </ul>
               </article>
               <article className="project-card">
@@ -142,8 +273,8 @@ function App() {
                 <p>
                   How it works: I mapped workloads and identified where
                   scheduled or conditional startup could cut idle time without
-                  risking stability. In some cases, this remained a proposal
-                  due to priority and change-risk constraints.
+                  risking stability. In some cases, this remained a proposal due
+                  to priority and change-risk constraints.
                 </p>
                 <ul>
                   <li>Clearer view of what could safely be turned off.</li>
@@ -176,8 +307,13 @@ function App() {
           <section className="content-section" id="looking-for">
             <h2>What I’m looking for</h2>
             <ul>
-              <li>Roles: Application Manager, Production Support Engineer, or SaaS Ops Engineer.</li>
-              <li>Environments: SaaS, production systems, AWS-based platforms.</li>
+              <li>
+                Roles: Application Manager, Production Support Engineer, or SaaS
+                Ops Engineer.
+              </li>
+              <li>
+                Environments: SaaS, production systems, AWS-based platforms.
+              </li>
               <li>Not targeting: frontend-heavy roles or ML research.</li>
             </ul>
           </section>
@@ -185,25 +321,55 @@ function App() {
           <section className="content-section" id="contact">
             <h2>Contact</h2>
             <p>
-              Email: <a href="mailto:justin.r.stock@gmail.com">justin.r.stock@gmail.com</a>
+              Email:{" "}
+              <a href="mailto:justin.r.stock@gmail.com">
+                justin.r.stock@gmail.com
+              </a>
             </p>
             <p>
-              LinkedIn:{' '}
-              <a href="https://linkedin.com/in/placeholder" target="_blank" rel="noreferrer">
+              LinkedIn:{" "}
+              <a
+                href="https://linkedin.com/in/placeholder"
+                target="_blank"
+                rel="noreferrer"
+              >
                 linkedin.com/in/placeholder
               </a>
             </p>
             <p>
-              GitHub:{' '}
-              <a href="https://github.com/jrstock79" target="_blank" rel="noreferrer">
+              GitHub:{" "}
+              <a
+                href="https://github.com/jrstock79"
+                target="_blank"
+                rel="noreferrer"
+              >
                 github.com/jrstock79
               </a>
             </p>
           </section>
         </main>
       </div>
+      <div className="floating-actions">
+        <a
+          className={`floating-button contact-button ${
+            showContactButton ? "" : "is-hidden"
+          }`}
+          href="mailto:justin.r.stock@gmail.com"
+        >
+          Contact me
+        </a>
+        <button
+          className={`floating-button top-button ${
+            showTopButton ? "" : "is-hidden"
+          }`}
+          type="button"
+          onClick={handleTopClick}
+        >
+          Up Top
+        </button>
+      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
