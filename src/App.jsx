@@ -225,9 +225,7 @@ function App() {
 
   return (
     <div className="page">
-      <div
-        className={`mobile-topbar ${showMobileTopbar ? "" : "is-hidden"}`}
-      >
+      <div className={`mobile-topbar ${showMobileTopbar ? "" : "is-hidden"}`}>
         <button
           type="button"
           className="mobile-topbar-button"
@@ -255,9 +253,7 @@ function App() {
         onClick={handleOverlayClick}
       />
       <aside
-        className={`drawer drawer-left ${
-          isNavDrawerOpen ? "is-open" : ""
-        }`}
+        className={`drawer drawer-left ${isNavDrawerOpen ? "is-open" : ""}`}
         aria-hidden={!isNavDrawerOpen}
       >
         <div className="drawer-content">
@@ -280,15 +276,17 @@ function App() {
         </div>
       </aside>
       <aside
-        className={`drawer drawer-right ${
-          isSocialDrawerOpen ? "is-open" : ""
-        }`}
+        className={`drawer drawer-right ${isSocialDrawerOpen ? "is-open" : ""}`}
         aria-hidden={!isSocialDrawerOpen}
       >
         <div className="drawer-content">
           <h3>Social</h3>
           <a href="mailto:jrstock@duck.com">Email</a>
-          <a href="https://github.com/jrstock79" target="_blank" rel="noreferrer">
+          <a
+            href="https://github.com/ymoose79"
+            target="_blank"
+            rel="noreferrer"
+          >
             GitHub
           </a>
           <a
@@ -307,41 +305,44 @@ function App() {
         <header className="hero">
           <nav className="top-nav">
             <div className="nav-links">
-              <a href="#about" onClick={(event) => handleNavClick(event, 'about')}>
+              <a
+                href="#about"
+                onClick={(event) => handleNavClick(event, "about")}
+              >
                 About
               </a>
               <a
                 href="#experience"
-                onClick={(event) => handleNavClick(event, 'experience')}
+                onClick={(event) => handleNavClick(event, "experience")}
               >
                 Experience
               </a>
               <a
                 href="#projects"
-                onClick={(event) => handleNavClick(event, 'projects')}
+                onClick={(event) => handleNavClick(event, "projects")}
               >
                 Projects
               </a>
             </div>
             <div className="nav-socials">
-          <a href="mailto:jrstock@duck.com">Email</a>
-          <a
-            href="https://github.com/ymoose79"
-            target="_blank"
-            rel="noreferrer"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://www.linkedin.com/in/jr-stock/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            LinkedIn
+              <a href="mailto:jrstock@duck.com">Email</a>
+              <a
+                href="https://github.com/ymoose79"
+                target="_blank"
+                rel="noreferrer"
+              >
+                GitHub
               </a>
-          <a href="/Justin_Stock_res.pdf" target="_blank" rel="noreferrer">
-            Resume
-          </a>
+              <a
+                href="https://www.linkedin.com/in/jr-stock/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                LinkedIn
+              </a>
+              <a href="/Justin_Stock_res.pdf" target="_blank" rel="noreferrer">
+                Resume
+              </a>
             </div>
           </nav>
 
@@ -350,10 +351,10 @@ function App() {
             <h1>Justin R. Stock</h1>
             <h2>Application Manager / Software Developer — SaaS Ops + AWS</h2>
             <p className="tagline">
-              I keep SaaS platforms reliable, shorten diagnosis time, and bring
-              cost discipline to cloud operations.
+              I keep customer-facing SaaS platforms reliable, shorten diagnosis
+              time, and bring cost discipline to cloud operations.
             </p>
-            <a className="hire-me" href="mailto:jrstock@duck.com">
+            <a className="contact-cta" href="mailto:jrstock@duck.com">
               Contact me
             </a>
           </div>
@@ -365,8 +366,8 @@ function App() {
             <h3>Proof of impact</h3>
             <ul>
               <li>
-                Improved maintainability by refactoring hard-to-read JavaScript
-                in data transformations.
+                Identified and refactored hard-to-read JavaScript in data
+                transformations to improve maintainability.
               </li>
               <li>
                 Helped customer-facing teams set accurate expectations by
@@ -377,7 +378,7 @@ function App() {
                 reduce idle usage.
               </li>
               <li>
-                Simplified secure file handoff so clients could deliver data
+                Implemented a simpler file handoff so clients could deliver data
                 without shared access.
               </li>
             </ul>
@@ -440,7 +441,8 @@ function App() {
             </p>
             <ul>
               <li>
-                Incident response, root-cause analysis, and durable fixes.
+                Incident response (pipeline failures, connector issues),
+                root-cause analysis, and durable fixes.
               </li>
               <li>AWS: file storage, compute, and ongoing cost reviews.</li>
               <li>
@@ -538,10 +540,7 @@ function App() {
           <section className="content-section" id="contact">
             <h2>Contact</h2>
             <p>
-              Email:{" "}
-              <a href="mailto:jrstock@duck.com">
-                jrstock@duck.com
-              </a>
+              Email: <a href="mailto:jrstock@duck.com">jrstock@duck.com</a>
             </p>
             <p>
               LinkedIn:{" "}
@@ -568,7 +567,7 @@ function App() {
       </div>
       <div className="floating-actions">
         <a
-          className={`floating-button contact-button ${
+          className={`contact-cta contact-button ${
             showContactButton ? "" : "is-hidden"
           }`}
           href="mailto:jrstock@duck.com"
