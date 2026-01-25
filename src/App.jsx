@@ -68,10 +68,7 @@ function App() {
   };
 
   const handleMobileTopClick = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-    });
+    smoothScrollTo(0);
   };
 
   const handleMobileContactClick = () => {
