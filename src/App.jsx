@@ -72,16 +72,7 @@ function App() {
   };
 
   const handleMobileContactClick = () => {
-    const target = document.getElementById("contact");
-    if (!target) {
-      return;
-    }
-
-    const targetY = target.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({
-      top: targetY,
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-    });
+    window.location.href = "mailto:jrstock@duck.com";
   };
 
   const handleNavToggle = () => {
@@ -564,7 +555,7 @@ function App() {
       </div>
       <div className="floating-actions">
         <a
-          className={`contact-cta contact-button ${
+          className={`floating-button contact-button ${
             showContactButton ? "" : "is-hidden"
           }`}
           href="mailto:jrstock@duck.com"
