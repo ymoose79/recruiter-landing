@@ -2,15 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 function App() {
+  const VIDEO_ID = "POTQGlTLaJg";
   const [showTopButton, setShowTopButton] = useState(false);
   const [showContactButton, setShowContactButton] = useState(false);
   const [showMobileTopbar, setShowMobileTopbar] = useState(true);
   const [showMobileBottomBar, setShowMobileBottomBar] = useState(false);
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
   const [isSocialDrawerOpen, setIsSocialDrawerOpen] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const lastScrollYRef = useRef(0);
   const rafRef = useRef(null);
   const hideBottomTimerRef = useRef(null);
+  const videoModalRef = useRef(null);
 
   const prefersReducedMotion = () =>
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -88,6 +91,16 @@ function App() {
   const handleOverlayClick = () => {
     setIsNavDrawerOpen(false);
     setIsSocialDrawerOpen(false);
+  };
+
+  const openVideo = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setShowVideo(true);
+  };
+
+  const closeVideo = () => {
+    setShowVideo(false);
   };
 
   useEffect(() => {
@@ -210,6 +223,32 @@ function App() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isNavDrawerOpen, isSocialDrawerOpen]);
+
+  useEffect(() => {
+    if (!showVideo) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" || event.key === "Esc") {
+        event.preventDefault();
+        setShowVideo(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown, true);
+    if (videoModalRef.current) {
+      videoModalRef.current.focus();
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown, true);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [showVideo]);
 
   return (
     <div className="page">
@@ -337,6 +376,13 @@ function App() {
           <div className="hero-content">
             <p className="eyebrow">St Marys, GA · Remote-friendly</p>
             <h1>Justin R. Stock</h1>
+            <a
+              className="hero-link"
+              href="https://www.youtube.com/watch?v=POTQGlTLaJg"
+              onClick={openVideo}
+            >
+              Thoughts on AI
+            </a>
             <h2>Application Manager / Software Developer — SaaS Ops + AWS</h2>
             <p className="tagline">
               I keep customer-facing SaaS platforms reliable, shorten diagnosis
@@ -592,6 +638,36 @@ function App() {
           Contact Me
         </button>
       </div>
+      {showVideo ? (
+        <div className="video-backdrop" onClick={closeVideo}>
+          <div
+            className="video-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Thoughts on AI video"
+            tabIndex={-1}
+            ref={videoModalRef}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="video-close"
+              aria-label="Close video"
+              onClick={closeVideo}
+            >
+              ×
+            </button>
+            <div className="video-frame">
+              <iframe
+                src={`https://www.youtube.com/embed/${VIDEO_ID}?rel=0&modestbranding=1`}
+                title="Thoughts on AI"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
