@@ -515,23 +515,27 @@ function App() {
                 </ul>
               </article>
               <article className="project-card">
-                <h3>AWS cost optimization</h3>
+                <h3>Enterprise application modernization</h3>
                 <p>
-                  Problem: Idle compute was inflating monthly spend without
-                  adding reliability.
+                  Problem: Managing ~120 customer environments required manual
+                  AWS, database, DNS, certificate, and application configuration
+                  changes.
                 </p>
                 <p>
-                  Design choice: Prefer on-demand use over always-on capacity.
+                  Design choice: Standardize isolated customer environments
+                  instead of forcing a risky multi-tenant redesign.
                 </p>
                 <p>
-                  How it works: I mapped workloads and identified where
-                  scheduled or conditional startup could cut idle time without
-                  risking stability. In some cases, this remained a proposal due
-                  to priority and change-risk constraints.
+                  Solution: I designed a repeatable AWS deployment model using
+                  versioned AMIs, Auto Scaling, Load Balancers, and standardized
+                  infrastructure to separate customer configuration from
+                  provisioning.
                 </p>
                 <ul>
-                  <li>Clearer view of what could safely be turned off.</li>
-                  <li>Documented tradeoffs between cost and reliability.</li>
+                  <li>Reduced configuration drift across ~120 environments.</li>
+                  <li>
+                    Simplified onboarding, recovery, and future automation.
+                  </li>
                 </ul>
               </article>
               <article className="project-card">
